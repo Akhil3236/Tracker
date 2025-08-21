@@ -1,10 +1,8 @@
 import jwt from "jsonwebtoken"
 
-
 /*--------------------------
     jwt verifier/middleware
 ----------------------------*/
-
 export const  authMiddleware=(req, res, next)=> {
 
     const token1=req.cookies.token;
