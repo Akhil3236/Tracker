@@ -21,7 +21,6 @@ export const signin=async(req,res)=>{
     }
 
     const isMatch =await bycrpt.compare(password,user.password);
-
     if(isMatch){
         res.status(200).json({
             message:"sucessfull"
