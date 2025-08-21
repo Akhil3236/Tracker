@@ -17,12 +17,10 @@ app.use(cors({
 }))
 
 const PORT=process.env.PORT || 4000;
-
 app.get("/",(req,res)=>{
     
     res.status(200).json({ message: 'ok' });
 })
-
 
 connectDB()
 .then(() => app.listen(PORT, () => console.log(`Server on ${PORT}`)))
