@@ -4,6 +4,7 @@ import {authRouter} from "../router/authRout.js"
 import cors from "cors"
 import {connectDB} from "../config/mongoBD.js";
 import cookieParser from "cookie-parser";
+import { userRouter } from "../router/userRouter.js";
 
 dotenv.config();
 
@@ -33,5 +34,6 @@ process.exit(1);
 });
 
 app.use("/auth",authRouter);
+app.use("/user",userRouter);
 
 
