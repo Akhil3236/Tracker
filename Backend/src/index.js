@@ -3,12 +3,13 @@ import dotenv from "dotenv";
 import {authRouter} from "../router/authRout.js"
 import cors from "cors"
 import {connectDB} from "../config/mongoBD.js";
-
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
 const app=express();
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(cors({
     origin:"*",
