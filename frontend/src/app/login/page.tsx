@@ -3,6 +3,9 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios';
+import Link from 'next/link';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 
 function page() {
@@ -30,15 +33,21 @@ function page() {
     e.preventDefault();    
     const resdata=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}auth/signin`,data);
 
-    if(resdata.data.message==="sucessfull"){
-      console.log("useradded");
+    if(resdata.data.message){
+      
+      toast.success(resdata.data.message,{
+        autoClose:5000
+      });
     }
+    // else{
+    //   toast(resdata.data.message);
+    // }
   }
 
   return (
     
     <>
-      
+     <ToastContainer />
       <br />
       <br />
 
@@ -72,6 +81,11 @@ function page() {
 
         <br />
         <button type='submit'>log-in</button>
+
+         <p>
+         Create account <Link href="/signup">here</Link>
+        </p>
+          
 
       </form>
     </>
