@@ -19,40 +19,44 @@ const generateaccesstoken=(user)=>{
 ----------------------------*/          
 export const signin=async(req,res)=>{
     
-    const {email,password}=req.body;
-    if(!email || !password){
-        return res.json({success:false,message:'Missing Datails'}); 
-    }
-    const user=await User.findOne({email});
-
-    
-    if(!user){
-        return res.json({success:false,message:'user not found'})
-    }
-
-    const isMatch =await bycrpt.compare(password,user.password);
-
-    
-    if(isMatch){
-
-        const token=generateaccesstoken(user);
+    try {
         
-        res.cookie("token", token, {
-            httpOnly: true,    // prevent JS access
-            secure: true,      // only send on HTTPS
-            sameSite: "strict", // protect CSRF
-            maxAge: 60 * 60 * 1000, // 1 hour
-        });
+        const {email,password}=req.body;
+        if(!email || !password){
+            return res.json({success:false,message:"Missing Datails"}); 
+        }
+        const user=await User.findOne({email});
         
-        res.status(200).json({
-            message:"sucessfull"
-        })
+        if(!user){
+            return res.json({success:false,message:"user not found"})
+        }
+        
+        const isMatch =awaitbycrpt.compare(password,user.password);
+        
+        
+        if(isMatch){
+            
+            const token=generateaccesstoken(user);
+            
+            res.cookie("token", token, {
+                httpOnly: true,    // prevent JS access
+                secure: true,      // only send on HTTPS
+                sameSite: "strict", // protect CSRF
+                maxAge: 60 * 60 * 1000, // 1 hour
+            });
+            
+            res.status(200).json({
+                message:"sucessfull"
+            })
+        }
+        else if(!isMatch){
+            res.status(404).json({
+                message:"incorrect password"
+            })
+        } 
+    } catch (error) {
+        res.status(200).json(error)
     }
-    else{
-        res.status(404).json({
-            message:"incorrect password"
-        })
-    } 
 }
 
 /*--------------------------
