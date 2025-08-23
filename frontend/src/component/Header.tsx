@@ -6,8 +6,12 @@ export default function Header() {
       <header style={{ padding: "1rem", background: "#222", color: "#fff" }}>
         
         <nav>
+            <Link href="/">Logo</Link>
             <Link href="/">Home</Link>
-            <Link href="/about">abou me</Link>
+            <br />
+            <Link href="/about">about us</Link>
+            <br />
+            <Link href="/login">Login</Link>
         </nav>
       </header>
     );
