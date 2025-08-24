@@ -22,16 +22,18 @@ export const signin=async(req,res)=>{
     try {
         
         const {email,password}=req.body;
+        
         if(!email || !password){
-            return res.json({success:false,message:"Missing Datails"}); 
+            return res.status(400).json({success:false,message:"Missing Datails"}); 
         }
         const user=await User.findOne({email});
         
         if(!user){
-            return res.json({success:false,message:"user not found"})
+            return res.status(404).json({success:false,message:"user not found"})
         }
         
-        const isMatch =awaitbycrpt.compare(password,user.password);
+        const isMatch =await bycrpt.compare(password,user.password);
+        
         
         
         if(isMatch){
@@ -50,12 +52,12 @@ export const signin=async(req,res)=>{
             })
         }
         else if(!isMatch){
-            res.status(404).json({
+            res.status(401).json({
                 message:"incorrect password"
             })
         } 
     } catch (error) {
-        res.status(200).json(error)
+        res.status(500).json({message:"Internal server error"})
     }
 }
 
@@ -70,14 +72,14 @@ export const signup=async(req,res)=>{
         const {name,email,password}=req.body;
         
         if(!name || !email || !password){
-            return res.json({success:false,message:'Missing Datails'});
+            return res.status(400).json({success:false,message:'Missing Datails'});
         }
 
         const hasedpassword= await bycrpt.hash(password,10);
 
         const check=await User.findOne({email});
         if(check){
-            res.status(200).json({
+            res.status(409).json({
                 message:"already exits!"
             })
         }
@@ -86,7 +88,7 @@ export const signup=async(req,res)=>{
                 name,email,password:hasedpassword
             })
             await user.save();
-            res.status(200).json({"message":"added!"})
+            res.status(201).json({"message":"added!"})
         }
       } catch (error) {
 
