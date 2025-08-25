@@ -1,17 +1,16 @@
 "use client";
 
-import React from 'react'
+import React, { use } from 'react'
 import { useState } from 'react'
 import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
 
-
-
 function page() {
+  const router=useRouter();
 
   const [data,setdata]=useState({
-
     email:"",
     password:""
 
@@ -39,9 +38,11 @@ function page() {
       console.log('Response data:', resdata.data);
       
       if(resdata.status===200){
+        
         toast.success(resdata.data.message,{
           autoClose:5000
         });
+        router.push("/dashboard")
       }
       if(resdata.status===202){
         toast(resdata.data.message);
@@ -119,8 +120,7 @@ function page() {
 
          <p>
          Create account <Link href="/signup">here</Link>
-        </p>
-          
+        </p>          
 
       </form>
     </>

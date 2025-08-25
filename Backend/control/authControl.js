@@ -39,11 +39,11 @@ export const signin=async(req,res)=>{
         if(isMatch){
             
             const token=generateaccesstoken(user);
-            
+        
             res.cookie("token", token, {
                 httpOnly: true,    // prevent JS access
                 secure: true,      // only send on HTTPS
-                sameSite: "strict", // protect CSRF
+                sameSite: "none", // protect CSRF
                 maxAge: 60 * 60 * 1000, // 1 hour
             });
             
