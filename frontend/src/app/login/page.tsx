@@ -32,7 +32,7 @@ function page() {
     e.preventDefault();    
     
     try {
-      const resdata=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}auth/signin`,data);
+      const resdata=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}auth/signin`,data,{withCredentials:true,});
 
       console.log('Response status:', resdata.status);
       console.log('Response data:', resdata.data);
@@ -68,9 +68,7 @@ function page() {
       console.error('Login error:', error);
     }
   }
-
   return (
-    
     <>
        <ToastContainer 
          position="top-right"
