@@ -13,11 +13,11 @@ const app=express();
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors({
-    origin:"*",
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin:"http://localhost:3001",
     credentials: true
 }))
 
+//here
 const PORT=process.env.PORT || 4000;
 
 app.get("/",(req,res)=>{

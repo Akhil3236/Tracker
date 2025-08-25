@@ -42,8 +42,8 @@ export const signin=async(req,res)=>{
         
             res.cookie("token", token, {
                 httpOnly: true,    // prevent JS access
-                secure: true,      // only send on HTTPS
-                sameSite: "none", // protect CSRF
+                secure: false,      // only send on HTTPS
+                sameSite: "lax", // protect CSRF
                 maxAge: 60 * 60 * 1000, // 1 hour
             });
             
