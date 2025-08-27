@@ -5,7 +5,7 @@ import cors from "cors"
 import {connectDB} from "../config/mongoBD.js";
 import cookieParser from "cookie-parser";
 import { userRouter } from "../router/userRouter.js";
-
+import { productRouth } from "../router/productRout.js";
 dotenv.config();
 
 const app=express();
@@ -13,7 +13,7 @@ const app=express();
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors({
-    origin:"http://localhost:3001",
+    origin:"http://localhost:3000",
     credentials: true
 }))
 
@@ -21,8 +21,7 @@ app.use(cors({
 const PORT=process.env.PORT || 4000;
 
 app.get("/",(req,res)=>{
-    
-    res.status(200).json({ message: 'ok' });
+        res.status(200).json({ message: 'ok' });
 })
 
 
@@ -35,5 +34,5 @@ process.exit(1);
 
 app.use("/auth",authRouter);
 app.use("/user",userRouter);
-
+app.use("/product",productRouth);
 
