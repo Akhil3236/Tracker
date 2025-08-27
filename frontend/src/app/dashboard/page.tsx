@@ -1,17 +1,18 @@
 "use client";
 
-import React, { useEffect } from 'react'
+import React, { use, useEffect } from 'react'
 import { useRouter } from 'next/navigation';
+
 import { useState } from 'react';
 import axios from 'axios';
 
 type Props = {}
 
 function page({}: Props) {
-
     const router = useRouter();
     const [loading, setLoading] = useState(true);
-    const [userdata,setuserdata]=useState({});
+    const [userdata,setuserdata]=useState("");
+    const [logged,setlogged]=useState(false);
   
     useEffect(() => {
         const checkAuth = async () => {
@@ -20,8 +21,9 @@ function page({}: Props) {
               withCredentials: true, 
             });
             
+            setLoading(true)
             setLoading(false);
-            setuserdata(res.data);
+            setuserdata(res.data.name);
           } catch (err) {
             console.error("Not authenticated", err);
             router.push("/login"); 
@@ -30,7 +32,7 @@ function page({}: Props) {
     
         checkAuth();
       });
-
+    
       if (loading) return <p>Loading...</p>;
   return (
     <>
@@ -38,10 +40,19 @@ function page({}: Props) {
     <div className="main">
 
         
-        DashBoard 
+        Hi ,  <b> 
+            {userdata}</b> Welcome
+        <br />
 
         <br />
-       <button>Authroized</button>
+
+        <p>this for products page where user can see the products
+            and if the role is user then 
+        </p>
+
+        <p>lets add the products here section </p>
+        
+        <br />
     </div>
      </>
   )
