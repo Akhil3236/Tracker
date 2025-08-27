@@ -14,6 +14,8 @@ const generateaccesstoken=(user)=>{
         {expiresIn: process.env.JWT_EXPIRES_IN}
     );
 }
+
+// added 
 /*--------------------------
          user sign-in 
 ----------------------------*/          
