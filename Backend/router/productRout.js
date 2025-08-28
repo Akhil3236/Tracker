@@ -6,5 +6,5 @@ export const productRouth=express.Router();
 
 productRouth.get("/",authMiddleware,productList);
 productRouth.post("/add",authMiddleware,add);
-productRouth.post("/edit",authMiddleware,edit);
-productRouth.post("/delete",authMiddleware,deleteproduct);
+productRouth.put("/edit/:id",authMiddleware,edit);
+productRouth.post("/delete/:id",authMiddleware,deleteproduct);
