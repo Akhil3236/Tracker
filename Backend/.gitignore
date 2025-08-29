@@ -11,3 +11,4 @@ yarn-error.log
 # Build output
 /dist
 /build
+fit.json

@@ -6,6 +6,17 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
+import { auth, googleprovider } from "../firebase.js";
+import { signInWithPopup } from "firebase/auth";
+
+
+
+// Force Google to show account selection
+googleprovider.setCustomParameters({
+  prompt: "select_account"
+});
+
+
 
 function page() {
   const router=useRouter();
@@ -68,6 +79,35 @@ function page() {
       console.error('Login error:', error);
     }
   }
+    /*--------------------------
+       login with google 
+  ----------------------------*/
+
+  const google=async()=>{
+
+    try {
+        
+      const result=await signInWithPopup(auth,googleprovider);
+      const userdetails=result.user;
+
+
+      const token = await userdetails.getIdToken();  
+      const google_res=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}auth/google`,
+        {token,},
+        { withCredentials: true }
+      );
+
+      if(google_res.status===200){
+        router.push("/dashboard");
+      }
+      // else{
+      //   toast(google_res.data);
+      // }
+    
+    } catch (error: any) {
+      console.log("error :: ->  ",error); 
+    }
+  }
   return (
     <>
        <ToastContainer 
@@ -115,12 +155,18 @@ function page() {
 
         <br />
         <button type='submit'>log-in</button>
+        
+        <br />
+        <br />
+
+        {/* added the auth */}
+
+      </form>
 
          <p>
          Create account <Link href="/signup">here</Link>
         </p>          
-
-      </form>
+        <button onClick={google}>sign in with google</button>
     </>
   )
 }

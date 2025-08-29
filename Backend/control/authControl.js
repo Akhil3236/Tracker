@@ -1,6 +1,9 @@
 import { User } from "../models/user/usermodel.js";
 import bycrpt from "bcrypt"
-import jwt from "jsonwebtoken"
+import jwt, { decode } from "jsonwebtoken"
+import admin from "../src/firebase.js";
+
+
 
 /*--------------------------
         helpers
@@ -60,6 +63,54 @@ export const signin=async(req,res)=>{
     } catch (error) {
         res.status(500).json({message:"Internal server error"})
     }
+}
+
+/*-----------------------------------
+         user sign-in with the google
+-------------------------------------*/
+
+
+export const google=async(req,res)=>{
+
+    const token1=req.body;
+    if (!token1) return res.status(401).json({ error: "No token provided" });
+
+    
+    const tokenid=token1.token;
+
+    try {
+        
+        const decoded = await admin.auth().verifyIdToken(tokenid);
+        const userRecord = await admin.auth().getUser(decoded.uid);
+        const email=userRecord.email;
+
+        const user=await User.findOne({email:`${email}`});
+
+        if(!user){
+            return res.status(404).json({
+                message:"user not found!  please login"
+            })
+        }
+
+        const token=generateaccesstoken(user);
+        
+            res.cookie("token", token, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "none",
+                maxAge: 60 * 60 * 1000,
+            });
+            
+            res.status(200).json({
+                message:"sucessfull"
+            })
+
+        
+        
+    } catch (error) {
+        return res.status(401).json({ message: "Invalid Google token" });
+    }
+
 }
 
 /*--------------------------
