@@ -18,7 +18,7 @@ const generateaccesstoken=(user)=>{
     );
 }
 
-// added 
+
 /*--------------------------
          user sign-in 
 ----------------------------*/          
@@ -88,7 +88,7 @@ export const google=async(req,res)=>{
 
         if(!user){
             return res.status(404).json({
-                message:"user not found!  please login"
+                message:"user not found!  please signup"
             })
         }
 
@@ -145,8 +145,55 @@ export const signup=async(req,res)=>{
       } catch (error) {
 
         res.status(400).json({message:"user not added"},error);
-        
+    
       }  
+}
+/*------------------------------
+         user sign-up with Oauth
+-------------------------------*/
+
+
+export const googleup=async(req,res)=>{
+
+    const token1=req.body;
+    if (!token1) return res.status(401).json({ error: "No token provided" });
+
+    const tokenid=token1.token;
+    try {
+        
+        const decoded = await admin.auth().verifyIdToken(tokenid);
+        const userRecord = await admin.auth().getUser(decoded.uid);
+        const email=userRecord.email;
+    
+        const user=await User.findOne({email:`${email}`});
+        
+        if(user){
+            return res.status(404).json({
+                message:"user already exists! please login"
+            })
+        }
+        
+        const name=userRecord.displayName;
+        const userdetails=new User({
+            name,email
+        })
+
+        await userdetails.save();
+        
+        const token=generateaccesstoken(userdetails);
+        
+            res.cookie("token", token, {
+                httpOnly: true,    // prevent JS access
+                secure: false,      // only send on HTTPS
+                sameSite: "lax", // protect CSRF
+                maxAge: 60 * 60 * 1000, // 1 hour
+            });
+        res.status(200).json({
+            message:"user added sucessfully !!!!!!!"
+        })
+    } catch (error) {   
+        res.status(404).json(error);
+    }
 }
 /*--------------------------
        user Logout 
@@ -155,4 +202,3 @@ export const logout=async(req,res)=>{
     res.clearCookie("token");
     res.json({ message: "Logged out" });
 }
-
