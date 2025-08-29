@@ -1,39 +1,63 @@
 "use client";
 
-import React, { use, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 
-import { useState } from 'react';
 import axios from 'axios';
 
 type Props = {}
 
-function page({}: Props) {
+function Page({}: Props) {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [userdata,setuserdata]=useState("");
-    const [logged,setlogged]=useState(false);
-  
+    const [search,setsearch]=useState(""); 
+    const [products,setproducts]=useState<any>(null);
+    
+    
     useEffect(() => {
         const checkAuth = async () => {
           try {
+            setLoading(true);
             const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}user`, {
               withCredentials: true, 
             });
-            
-            setLoading(true)
-            setLoading(false);
             setuserdata(res.data.name);
+            setLoading(false);
           } catch (err) {
             console.error("Not authenticated", err);
+            setLoading(false);
             router.push("/login"); 
           }
         };
-    
-        checkAuth();
-      });
+
+        const pro=async()=>{
+          const productsRes = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}product`,
+            {
+              withCredentials:true
+            });
+          setproducts(productsRes.data);
+          }
+          checkAuth();
+          pro();
+
+        }
+          , []);
+            
     
       if (loading) return <p>Loading...</p>;
+
+
+
+
+  const handleChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
+    setsearch(e.target.value);
+ }
+  
+ const searchitem=(e: React.FormEvent<HTMLFormElement>)=>{
+      e.preventDefault();
+      alert(search);
+ }
   return (
     <>
     
@@ -44,6 +68,29 @@ function page({}: Props) {
             {userdata}</b> Welcome
         <br />
 
+        <div className="serach">
+      
+          <form onSubmit={searchitem}>
+
+              <input type="text" 
+              placeholder='search'
+              required
+              name="search"
+              value={search}
+              onChange={handleChange}
+              />
+
+              <button type='submit'>search</button>
+          </form>
+        </div>
+
+
+        <br />
+
+        <pre>
+          {products !== null ? products.name : null}
+          
+        </pre>
         <br />
 
         <p>this for products page where user can see the products
@@ -58,4 +105,4 @@ function page({}: Props) {
   )
 }
 
-export default page
+export default Page
