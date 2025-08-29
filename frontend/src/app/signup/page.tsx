@@ -3,6 +3,10 @@ import axios from 'axios';
 import React from 'react'
 import { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
+import { auth, googleprovider } from "../firebase.js";
+import { signInWithPopup } from "firebase/auth";
+import { useRouter } from 'next/navigation';
+
 
 type Props = {}
 
@@ -13,6 +17,7 @@ function page({}: Props) {
         email:"",
         password:"",
     });
+    const router=useRouter();
     const onhandlechange=(e:React.ChangeEvent<HTMLInputElement>)=>{
         setdata({
             ...data,
@@ -52,6 +57,31 @@ function page({}: Props) {
             console.error('Signup error:', error);
         }
     }
+
+
+
+    const google=async()=>{
+
+        try {
+        
+            const result=await signInWithPopup(auth,googleprovider);
+            const userdetails=result.user;
+      
+      
+            const token = await userdetails.getIdToken();  
+            const google_res=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}auth/googleup`,
+              {token,},
+              { withCredentials: true }
+            );
+      
+            if(google_res.status===200){
+              router.push("/dashboard");
+            }
+          
+          } catch (error: any) {
+            console.log("error :: ->  ",error); 
+          }
+        }
   return (
     <>
      <ToastContainer 
@@ -108,8 +138,13 @@ function page({}: Props) {
         <button type='submit'>Sign-up</button>
      </form>
 
+
+     {/* here  signup with google is added */}
+
+     <button onClick={google}>sign up with google</button>
+
     </>
   )
-}
 
+}
 export default page
