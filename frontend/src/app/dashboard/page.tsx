@@ -12,7 +12,7 @@ function Page({}: Props) {
     const [loading, setLoading] = useState(true);
     const [userdata,setuserdata]=useState("");
     const [search,setsearch]=useState(""); 
-    const [products,setproducts]=useState<any>(null);
+    const [products,setproducts]=useState<any[]>([]);
     
     
     useEffect(() => {
@@ -36,7 +36,7 @@ function Page({}: Props) {
             {
               withCredentials:true
             });
-          setproducts(productsRes.data);
+          setproducts(productsRes.data ?? []);
           }
           checkAuth();
           pro();
@@ -87,15 +87,12 @@ function Page({}: Props) {
 
         <br />
 
-        <pre>
-          {products !== null ? products.name : null}
-          
-        </pre>
+        <ul>
+          {products.map((p: any, idx: number) => (
+            <li key={p._id || idx}>{p.name}</li>
+          ))}
+        </ul>
         <br />
-
-        <p>this for products page where user can see the products
-            and if the role is user then 
-        </p>
 
         <p>lets add the products here section </p>
         
