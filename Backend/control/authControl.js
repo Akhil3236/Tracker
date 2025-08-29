@@ -31,13 +31,15 @@ export const signin=async(req,res)=>{
             return res.status(400).json({success:false,message:"Missing Datails"}); 
         }
         const user=await User.findOne({email});
+
+        // console.log(user);
+        
         
         if(!user){
             return res.status(404).json({success:false,message:"user not found"})
         }
         
         const isMatch =await bycrpt.compare(password,user.password);
-        
         
         
         if(isMatch){

@@ -5,14 +5,14 @@ import { Products } from "../models/products/product.js"
 ----------------------------*/
 export const productList=async(req,res)=>{
     try {
-        const [products]=await Products.find({});
+        const products = await Products.find({});
         res.status(200).json(products);
     } catch (error) {
         res.status(404).json(error);
     }
 }
 /*---------------------------------------------------------
-2) admin can add the prodducts to the product list
+2) admin can edit the prodducts to the product list
 -----------------------------------------------------------*/
 export const edit=async(req,res)=>{
 
@@ -35,7 +35,7 @@ export const edit=async(req,res)=>{
 }
 
 /*------------------------------------------------------------------
-3) admin can edit the products to the page ofr thje products
+3) admin can add the products to the page ofr thje products
 -------------------------------------------------------------------*/
 export const add=async(req,res)=>{
 
