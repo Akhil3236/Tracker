@@ -12,4 +12,3 @@ authRouter.post('/googleup',googleup);
 authRouter.post('/logout',authMiddleware,logout);
 
 
-
