@@ -27,7 +27,7 @@ function Page({}: Props) {
           } catch (err) {
             console.error("Not authenticated", err);
             setLoading(false);
-            router.push("/login"); 
+            router.push("login"); 
           }
         };
 
