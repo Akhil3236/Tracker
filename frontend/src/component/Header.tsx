@@ -67,7 +67,6 @@ export default function Header() {
            
             <Link href="/about">about us</Link>
           
-
             {
               logged ? (
                 <>
