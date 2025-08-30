@@ -151,6 +151,10 @@ function page() {
           onChange={handleChange}
           className='border p-1.5'
           />
+
+        <p>
+        <Link href="/password">forgot password ?</Link>
+          </p>  
         </label>
 
         <br />

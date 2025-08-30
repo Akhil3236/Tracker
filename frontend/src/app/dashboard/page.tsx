@@ -47,9 +47,7 @@ function Page({}: Props) {
     
       if (loading) return <p>Loading...</p>;
 
-
-
-
+      
   const handleChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
     setsearch(e.target.value);
  }
