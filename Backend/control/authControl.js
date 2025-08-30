@@ -1,5 +1,5 @@
 import { User } from "../models/user/usermodel.js";
-import bycrpt from "bcrypt"
+import bcrypt from "bcrypt"
 import jwt, { decode } from "jsonwebtoken"
 import admin from "../src/firebase.js";
 
@@ -39,7 +39,11 @@ export const signin=async(req,res)=>{
             return res.status(404).json({success:false,message:"user not found"})
         }
         
-        const isMatch =await bycrpt.compare(password,user.password);
+        if(!user.password){
+            return res.status(400).json({success:false,message:"Invalid user data"})
+        }
+        
+        const isMatch = await bcrypt.compare(password, user.password);
         
         
         if(isMatch){
@@ -129,7 +133,7 @@ export const signup=async(req,res)=>{
             return res.status(400).json({success:false,message:'Missing Datails'});
         }
 
-        const hasedpassword= await bycrpt.hash(password,10);
+        const hasedpassword= await bcrypt.hash(password,10);
 
         const check=await User.findOne({email});
         if(check){
@@ -202,5 +206,7 @@ export const googleup=async(req,res)=>{
 ----------------------------*/
 export const logout=async(req,res)=>{
     res.clearCookie("token");
-    res.json({ message: "Logged out" });
+    res.status(200).json({ message: "Logged out" });
+
+
 }

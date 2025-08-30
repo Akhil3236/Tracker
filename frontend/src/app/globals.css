@@ -25,3 +25,21 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.header{
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  
+}
+ .right{
+
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 25%;
+  margin-inline-end: 50px;
+
+}
