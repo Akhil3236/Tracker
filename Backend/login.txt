@@ -8,7 +8,6 @@ Your login was successful at {{timestamp}}.
 
 Stay healthy and keep tracking your fitness journey with us!
 
-Stay strong, stay fueled 💪  
 Best regards,
 The Fit-Fuel Team
 
