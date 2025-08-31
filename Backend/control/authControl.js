@@ -72,7 +72,7 @@ export const signin=async(req,res)=>{
 }
 
 /*-----------------------------------
-         user sign-in with the google
+     user sign-in with the google
 -------------------------------------*/
 
 
