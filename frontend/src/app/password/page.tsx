@@ -53,7 +53,7 @@ const sendmail=async(response: {to: string})=>{
 
      const sendotp=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}email/reset`,response)
 
-     alert("otp has been sented to you email");
+     alert("otp has been sent to your email");
      
  }
   return (
