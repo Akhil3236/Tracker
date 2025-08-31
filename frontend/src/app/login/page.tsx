@@ -36,6 +36,20 @@ function page() {
   }
 
   /*--------------------------
+  email serveric login 
+  ----------------------------*/
+  const login=async()=>{
+
+    const sendmail=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}email/password`,{
+      to: data.email
+    });
+
+    console.log(sendmail);
+
+    alert("Email has been sent")
+    
+  }
+  /*--------------------------
        login function 
   ----------------------------*/
   const submitdata=async(e:React.ChangeEvent<HTMLFormElement>)=>{
@@ -53,6 +67,7 @@ function page() {
         toast.success(resdata.data.message,{
           autoClose:5000
         });
+        login();
         router.push("/dashboard")
       }
       if(resdata.status===202){
@@ -98,7 +113,9 @@ function page() {
       );
 
       if(google_res.status===200){
+        login();
         router.push("/dashboard");
+        
       }
       // else{
       //   toast(google_res.data);
@@ -108,6 +125,9 @@ function page() {
       console.log("error :: ->  ",error); 
     }
   }
+
+  
+
   return (
     <>
        <ToastContainer 

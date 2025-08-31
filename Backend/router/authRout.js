@@ -3,6 +3,7 @@ import { google, googleup, signin, signup } from "../control/authControl.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { logout } from "../control/authControl.js";
 
+
 export const authRouter=express.Router();
 
 authRouter.post('/signin',signin);
