@@ -44,8 +44,6 @@ function page() {
       to: data.email
     });
 
-    console.log(sendmail);
-
     alert("Email has been sent")
     
   }
