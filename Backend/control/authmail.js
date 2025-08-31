@@ -77,7 +77,7 @@ export const reset=async(req,res)=>{
       await transporter.sendMail({
         from: `${process.env.SENDER_EMAIL}`, //ender the prvider mail the emila should be same as the user
         to,
-        subject:"one-time password(Fitfuel)",
+        subject:"one-time password(Fit-Fuel)",
         text:`your OTP is ${otp}`
       });
   
