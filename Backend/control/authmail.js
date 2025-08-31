@@ -29,7 +29,7 @@ export const send_mail = async (req, res) => {
         from: `${process.env.SENDER_EMAIL}`, //ender the prvider mail the emila should be same as the user
         to,
         subject:"update regarding password (Fit-Fuel)",
-        text:"your password has been sucessfully changed "
+        text:"your password has been successfully changed "
       });
   
       res.json({ success: true, message: "Email sent successfully" });
