@@ -1,0 +1,15 @@
+Hello, {{NAME}} 👋
+
+We received a request to reset your password for your FitFuel account.  
+To continue, please use the OTP below:  
+
+Your OTP is: {{otp}} 🔑  
+
+⚠️ This OTP will expire in 5 minutes. If you didn’t request a password reset, please ignore this email — your account is safe.  
+
+Stay strong, stay fueled 💪  
+Team FitFuel
+
+
+This is an automated message. Please do not reply to this email.
+

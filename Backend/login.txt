@@ -1,0 +1,16 @@
+Welcome to Fit-Fuel! 🎉
+
+Dear {{name}},
+
+Thank you for logging into your Fit-Fuel account. We're excited to have you back!
+
+Your login was successful at {{timestamp}}.
+
+Stay healthy and keep tracking your fitness journey with us!
+
+Stay strong, stay fueled 💪  
+Best regards,
+The Fit-Fuel Team
+
+---
+This is an automated message. Please do not reply to this email.

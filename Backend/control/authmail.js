@@ -1,17 +1,71 @@
 import nodemailer from "nodemailer"; 
 import dotenv from "dotenv";
 import { User } from "../models/user/usermodel.js";
-
+import fs from "fs";
+import path from "path";
 
 dotenv.config();
 
+// Read the login template
+const loginTemplate = path.join(process.cwd(), 'login.txt');
+const template_login = fs.readFileSync(loginTemplate, 'utf8');
+
+// read the otp page
+const otpTemplete=path.join(process.cwd(),'otp.txt');
+const template_otp=fs.readFileSync(otpTemplete,'utf8');
+
+
+/*---------------------------------------------------------
+       welcome mail set-up
+-----------------------------------------------------------*/
+
+export const welcome=async(req,res)=>{
+
+  const {to}=req.body;
+
+  try {
+    // Get user details for personalization
+    const user = await User.findOne({email: to});
+    const userName = user ? user.name : 'User';
+    const timestamp = new Date().toLocaleString();
+
+    // Replace placeholders in template
+    let emailContent = template_login
+      .replace('{{name}}', userName)
+      .replace('{{timestamp}}', timestamp);
+
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: `${process.env.SENDER_EMAIL}`, // correct email
+        pass: `${process.env.SENDER_PASSWORD}`  //enter the 16 digit passsword
+
+      }
+    });
+
+    await transporter.sendMail({
+      from: `${process.env.SENDER_EMAIL}`, //ender the prvider mail the emila should be same as the user
+      to,
+      subject:"Login detected(Fit-Fuel)",
+      text: emailContent
+    });
+
+    res.json({ success: true, message: "login mail has been sent" });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+  
+
+}
 /*---------------------------------------------------------
        reset  password email set-up
 -----------------------------------------------------------*/
 export const send_mail = async (req, res) => {
     const  {to} = req.body;
 
-    console.log(to);
+   
   
     try {
       let transporter = nodemailer.createTransport({
@@ -46,21 +100,29 @@ const otpStore={};
 export const reset=async(req,res)=>{
 
     const {to}=req.body;
-   
+
+    const user = await User.findOne({email: to});
+    const userName = user ? user.name : 'User';
+    const timestamp = new Date().toLocaleString();
+
+    
     const email=to;
     const verifyto=await User.findOne({email});
     
     if(verifyto===null){
-
-    console.log("user not found !!");
-    res.status(400).json({
-      message:"user not found !"
-    })
-    return;
-     
+      
+      console.log("user not found !!");
+      res.status(400).json({
+        message:"user not found !"
+      })
+      return;
+      
     }
     const otp=Math.floor(1000+Math.random()*9000).toString();
     otpStore[to] = { otp, expires: Date.now() + 5 * 60 * 1000 };
+    let emailContent = template_otp
+      .replace('{{NAME}}', userName)
+      .replace('{{otp}}', otp);
     
     try {
       let transporter = nodemailer.createTransport({
@@ -78,7 +140,7 @@ export const reset=async(req,res)=>{
         from: `${process.env.SENDER_EMAIL}`, //ender the prvider mail the emila should be same as the user
         to,
         subject:"one-time password(Fit-Fuel)",
-        text:`your OTP is ${otp}`
+        text:`${emailContent}`
       });
   
       res.json({ success: true, message: "Email sent successfully" });
@@ -109,6 +171,5 @@ export const  otp=async(req, res)=> {
 
   delete otpStore[to]; // Remove OTP after successful verification
   res.status(200).json({ message: 'OTP verified successfully' });
-
 
 }

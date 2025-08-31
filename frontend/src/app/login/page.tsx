@@ -36,11 +36,11 @@ function page() {
   }
 
   /*--------------------------
-  email serveric login 
+  email  login services 
   ----------------------------*/
   const login=async()=>{
 
-    const sendmail=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}email/password`,{
+    const sendmail=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}email/welcome`,{
       to: data.email
     });
 
@@ -94,7 +94,7 @@ function page() {
       console.error('Login error:', error);
     }
   }
-    /*--------------------------
+  /*--------------------------
        login with google 
   ----------------------------*/
 
