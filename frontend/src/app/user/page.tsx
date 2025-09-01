@@ -2,7 +2,7 @@
 import React from 'react'
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import useUserstate from "../Store/store.js";
+import useUserstate from "../Store/store";
 
 
 type Props = {}
