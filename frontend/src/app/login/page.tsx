@@ -66,7 +66,7 @@ function page() {
           autoClose:5000
         });
         login();
-        router.push("/dashboard")
+        router.push("/")
       }
       if(resdata.status===202){
         toast(resdata.data.message);
@@ -112,7 +112,7 @@ function page() {
 
       if(google_res.status===200){
         login();
-        router.push("/dashboard");
+        router.push("/");
         
       }
       // else{

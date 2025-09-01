@@ -2,11 +2,15 @@
 import React from 'react'
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import useUserstate from "../Store/store.js";
+
 
 type Props = {}
 
 function page({}: Props) {
-
+  
+  const user = useUserstate((state) => state.user);
+  const clearUser = useUserstate((state) => state.clearUser);
   const navigate=useRouter();
   const logout=async()=>{
 
@@ -18,11 +22,10 @@ function page({}: Props) {
     if(res.status===200){
         // Dispatch custom event to refresh header
         window.dispatchEvent(new Event('auth-changed'));
+        clearUser();
         navigate.push("login");
     }
-
   } 
- 
   return (
     <>
      
@@ -31,6 +34,18 @@ function page({}: Props) {
      here will be all the user details 
      </p>
     
+
+     {user?(<>
+        {user.name}
+        <br />
+        {user.email}
+        <br />
+        {user.role}
+        <br />
+     </>):(<>
+
+     <p>null</p></>)}
+
 
     <button onClick={logout}>
         logout
