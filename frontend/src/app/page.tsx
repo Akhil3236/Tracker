@@ -30,8 +30,7 @@ export default function Home() {
       }
     };
       checkAuth();
-    }
-      , []);
+    }, []);
         
 
   if (loading) return <p>Loading...</p>;
