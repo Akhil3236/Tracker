@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
-import useUserstate from "../Store/store.js";
+import useUserstate from "../Store/store";
 
 import axios from 'axios';
 
