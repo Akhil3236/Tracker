@@ -4,7 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import useUserstate from "@/app/Store/store.js";
+import useUserstate from "@/app/Store/store";
 
 // src/components/Header.tsx
 export default function Header() {
