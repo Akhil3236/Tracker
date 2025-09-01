@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
+import useUserstate from "../Store/store";
 
 import axios from 'axios';
 
@@ -9,27 +10,16 @@ type Props = {}
 
 function Page({}: Props) {
     const router = useRouter();
-    const [loading, setLoading] = useState(true);
     const [userdata,setuserdata]=useState("");
     const [search,setsearch]=useState(""); 
     const [products,setproducts]=useState<any[]>([]);
+    const setUser = useUserstate((state) => state.setUser);
+    const user = useUserstate((state) => state.user);
+
+    
     
     
     useEffect(() => {
-        const checkAuth = async () => {
-          try {
-            setLoading(true);
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}user`, {
-              withCredentials: true, 
-            });
-            setuserdata(res.data.name);
-            setLoading(false);
-          } catch (err) {
-            console.error("Not authenticated", err);
-            setLoading(false);
-            router.push("login"); 
-          }
-        };
 
         const pro=async()=>{
           const productsRes = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}product`,
@@ -38,15 +28,11 @@ function Page({}: Props) {
             });
           setproducts(productsRes.data ?? []);
           }
-          checkAuth();
           pro();
 
         }
           , []);
-            
-    
-      if (loading) return <p>Loading...</p>;
-
+          
       
   const handleChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
     setsearch(e.target.value);
@@ -89,7 +75,19 @@ function Page({}: Props) {
           {products.map((p: any, idx: number) => (
             <li key={p._id || idx}>{p.name}</li>
           ))}
+
+
+
+          {user?(
+            <>{user.name}
+
+            <p>user: {user.email}</p>
+            </>
+          
+          ):(<>null</>)}
         </ul>
+
+        
         <br />
 
         <p>lets add the products here section </p>

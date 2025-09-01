@@ -1,53 +1,19 @@
 "use client";
 
-
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import useUserstate from "@/app/Store/store";
 
 // src/components/Header.tsx
 export default function Header() {
-  
-  const [logged,setlooged]=useState(false);
+
   const router = useRouter();
-  
-  useEffect(()=>{
-     
-    const checkuser=async()=>{
-      try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}user`, {
-          withCredentials: true, 
-        });
-        if(res){
-          setlooged(true);
-        }
-      } catch (err) {
-        setlooged(false);
-      }
-    }
-    
-    checkuser();
-    
-    // Listen for auth changes
-    const handleStorageChange = () => {
-      checkuser();
-    };
-    
-    const handleAuthChange = () => {
-      checkuser();
-    };
-    
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('focus', checkuser);
-    window.addEventListener('auth-changed', handleAuthChange);
-    
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('focus', checkuser);
-      window.removeEventListener('auth-changed', handleAuthChange);
-    };
-  },[router])
+  const user = useUserstate((state) => state.user);
+
+
+
 
 
     return (
@@ -63,12 +29,12 @@ export default function Header() {
 
 
            
-            <Link href="/">Home</Link>
+            <Link href="/dashboard">Home</Link>
            
             <Link href="/about">about us</Link>
           
             {
-              logged ? (
+              user ? (
                 <>
                   <Link href="/user">user</Link>
                 </>
