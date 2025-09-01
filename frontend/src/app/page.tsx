@@ -1,6 +1,6 @@
 "use client";
 
-import useUserstate from "./Store/store.js";
+import useUserstate from "./Store/store";
 import { useRouter } from 'next/navigation';
 import { useState,useEffect } from "react";
 import axios from "axios";
