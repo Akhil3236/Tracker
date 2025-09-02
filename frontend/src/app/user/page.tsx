@@ -67,13 +67,6 @@ function Page({}: Props) {
                   onChange={handleChange}
                   className="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:ring focus:ring-green-500"
                 />
-                <input
-                  type="text"
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:ring focus:ring-green-500"
-                />
                 <div className="flex gap-3">
                   <button
                     onClick={saveChanges}

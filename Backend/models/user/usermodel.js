@@ -23,6 +23,11 @@ const userSchema=new mongoose.Schema({
         type: Date, 
         default: Date.now
 
+     },
+     cart:{
+         type:[String],
+         required:false
+
      }
 })
 export const User=mongoose.model('User',userSchema);
