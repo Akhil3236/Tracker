@@ -1,101 +1,116 @@
 "use client";
 
-import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import useUserstate from "../Store/store";
+import useProduct from "../Store/products";
 
-import axios from 'axios';
-
-type Props = {}
+type Props = {};
 
 function Page({}: Props) {
-    const router = useRouter();
-    const [userdata,setuserdata]=useState("");
-    const [search,setsearch]=useState(""); 
-    const [products,setproducts]=useState<any[]>([]);
-    const setUser = useUserstate((state) => state.setUser);
-    const user = useUserstate((state) => state.user);
+  const router = useRouter();
+  const [search, setsearch] = useState("");
 
-    
-    
-    
-    useEffect(() => {
+  const setUser = useUserstate((state) => state.setUser);
+  const user = useUserstate((state) => state.user);
+  const products = useProduct((state) => state.product);
 
-        const pro=async()=>{
-          const productsRes = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}product`,
-            {
-              withCredentials:true
-            });
-          setproducts(productsRes.data ?? []);
-          }
-          pro();
-
-        }
-          , []);
-          
-      
-  const handleChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setsearch(e.target.value);
- }
-  
- const searchitem=(e: React.FormEvent<HTMLFormElement>)=>{
-      e.preventDefault();
-      alert(search);
- }
+  };
+
+  const searchitem = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    alert(search);
+  };  
   return (
     <>
-    
-    <div className="main">
-
-        
-        Hi ,  <b> 
-            {userdata}</b> Welcome
+      <div className="main">
         <br />
 
+        {/* 🔎 Search Section */}
         <div className="serach">
-      
           <form onSubmit={searchitem}>
-
-              <input type="text" 
-              placeholder='search'
+            <input
+              type="text"
+              placeholder="search"
               required
               name="search"
               value={search}
               onChange={handleChange}
               />
-
-              <button type='submit'>search</button>
+            <button type="submit">search</button>
           </form>
         </div>
 
-
         <br />
 
-        <ul>
-          {products.map((p: any, idx: number) => (
-            <li key={p._id || idx}>{p.name}</li>
-          ))}
+        Hi , <b>{user.name}</b> Welcome
 
+        <br /><br />
+        {/* added  Products Section */}
 
+        {/* make some changes */}
+        <div className="products-grid">
+          {products && products.length > 0 ? (
+            products.map((p: any) => (
+              <div
+                key={p._id}
+                style={{
+                  border: "1px solid #ccc",
+                  borderRadius: "12px",
+                  padding: "8px",
+                  boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+                  textAlign: "center",
+                }}
+              >
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  style={{ width: "100%", height: "150px", objectFit: "cover", borderRadius: "8px" }}
+                />
+                <h3>{p.name}</h3>
+                <p>{p.desc}</p>
+                <p>
+                  <b>₹{p.cost}</b> <span style={{ color: "green" }}>-{p.discount}%</span>
+                </p>
 
-          {user?(
-            <>{user.name}
-
-            <p>user: {user.email}</p>
-            </>
-          
-          ):(<>null</>)}
-        </ul>
-
-        
-        <br />
-
-        <p>lets add the products here section </p>
-        
-        <br />
-    </div>
-     </>
-  )
+                <div className="Buybutton">
+                  
+                <button
+                  style={{
+                    background: "#0070f3",
+                    color: "white",
+                    padding: "8px 12px",
+                    border: "none",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                  }}
+                  >
+                  Add to Cart
+                </button>
+                <button
+                  style={{
+                    background: "red",
+                    color: "white",
+                    padding: "8px 12px",
+                    border: "none",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                  }}
+                  >
+                  buy
+                </button>
+                  </div>
+              </div>
+            ))
+          ) : (
+            <p>No products available</p>
+          )}
+        </div>
+      </div>
+    </>
+  );
 }
 
-export default Page
+export default Page;

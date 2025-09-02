@@ -1,19 +1,27 @@
 "use client";
 
 import useUserstate from "./Store/store";
+import useProduct from "./Store/products";
 import { useRouter } from 'next/navigation';
 import { useState,useEffect } from "react";
 import axios from "axios";
 
 export default function Home() {
   const user = useUserstate((state) => state.user);
+  const product=useProduct((state)=>state.product);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
 
   const setUser = useUserstate((state) => state.setUser);
+  const setProduct=useProduct((state)=>state.setProduct);
+
 
   useEffect(() => {
+
+  /*--------------------------------
+     user details storage in zustand 
+  ----------------------------------*/
     const checkAuth = async () => {
       try {
         setLoading(true);
@@ -26,10 +34,24 @@ export default function Home() {
       } catch (err) {
         console.error("Not authenticated", err);
         setLoading(false);
-        router.push("login"); 
+        // router.push("login"); 
       }
     };
+
+
+  /*------------------------------------
+     product details storage in zustand 
+  ------------------------------------*/
+    const getproducts=async()=>{
+     
+      const products=await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}product`,{
+        withCredentials:true,
+      });
+      setProduct(products.data);
+      setLoading(false);
+    }
       checkAuth();
+      getproducts();
     }, []);
         
 

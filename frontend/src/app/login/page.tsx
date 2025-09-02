@@ -111,8 +111,8 @@ function page() {
       );
 
       if(google_res.status===200){
-        login();
         router.push("/");
+        login();
         
       }
       // else{
