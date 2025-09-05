@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "nodemailer": "^7.0.6"
+    "dotenv": "^17.2.2",
+    "nodemailer": "^7.0.6",
+    "twilio": "^5.9.0"
   }
 }
