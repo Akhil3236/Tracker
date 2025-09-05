@@ -1,22 +1,34 @@
 const nodemailer = require("nodemailer");
+const twilio = require('twilio');
+
+
+
 
 exports.handler = async (event) => {
-  const body = JSON.parse(event.body);
+  console.log("Event Body:", event.body);
 
-  // Configure SMTP transporter (using Gmail App Password)
+  let body;
+  try {
+    body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+  } catch (err) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ success: false, error: "Invalid request body" }),
+    };
+  }
+
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "akhiltuluri123@gmail.com", // Gmail address
-      pass: "zogy brzq lzfs mwyd", // App password
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
   });
 
-  // Mail options
   let mailOptions = {
-    from: "akhiltuluri123@gmail.com",   // sender
-    to: "akhiltuluri123@gmail.com",     // your inbox (so YOU receive)
-    subject: "New Form Submission",
+    from: process.env.EMAIL_USER,
+    to: process.env.EMAIL_USER,
+    subject: "This email is for testing",
     text: `Name: ${body.name}\nEmail: ${body.email}\nMessage: ${body.message}`,
   };
 
