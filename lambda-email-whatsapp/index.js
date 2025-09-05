@@ -1,40 +1,38 @@
+const nodemailer = require("nodemailer");
+
 exports.handler = async (event) => {
+  const body = JSON.parse(event.body);
+
+  // Configure SMTP transporter (using Gmail App Password)
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "akhiltuluri123@gmail.com", // Gmail address
+      pass: "zogy brzq lzfs mwyd", // App password
+    },
+  });
+
+  // Mail options
+  let mailOptions = {
+    from: "akhiltuluri123@gmail.com",   // sender
+    to: "akhiltuluri123@gmail.com",     // your inbox (so YOU receive)
+    subject: "New Form Submission",
+    text: `Name: ${body.name}\nEmail: ${body.email}\nMessage: ${body.message}`,
+  };
+
   try {
-    console.log("Event:", JSON.stringify(event));
-
-    const route = event.rawPath;  // correct way to get route
-    const body = event.body ? JSON.parse(event.body) : {};
-
-    if (route === "/send-email") {
-      const { to, subject, message } = body;
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          success: true,
-          message: `Email sent to ${to} with subject "${subject}"`,
-        }),
-      };
-    }
-
-    if (route === "/send-whatsapp") {
-      const { to, message } = body;
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          success: true,
-          message: `WhatsApp sent to ${to} with message "${message}"`,
-        }),
-      };
-    }
-
+    await transporter.sendMail(mailOptions);
     return {
-      statusCode: 404,
-      body: JSON.stringify({ error: "Route not found" }),
+      statusCode: 200,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ success: true, message: "Email sent!" }),
     };
-  } catch (err) {
+  } catch (error) {
+    console.error("Mail Error:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: err.message }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ success: false, error: error.message }),
     };
   }
 };
