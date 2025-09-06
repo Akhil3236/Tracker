@@ -1,8 +1,5 @@
 const nodemailer = require("nodemailer");
-const twilio = require('twilio');
-
-
-
+const packageName = require('packageName');
 
 exports.handler = async (event) => {
   console.log("Event Body:", event.body);
