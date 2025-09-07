@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useUserstate from "../Store/store";
 import useProduct from "../Store/products";
+import axios from "axios";
 
 type Props = {};
 
@@ -11,9 +12,11 @@ function Page({}: Props) {
   const router = useRouter();
   const [search, setsearch] = useState("");
 
-  const setUser = useUserstate((state) => state.setUser);
+  const setProduct = useProduct((state) => state.setProduct);
   const user = useUserstate((state) => state.user);
   const products = useProduct((state) => state.product);
+
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setsearch(e.target.value);
@@ -23,6 +26,33 @@ function Page({}: Props) {
     e.preventDefault();
     alert(search);
   };  
+ 
+  useEffect(()=>{
+  
+    /*------------------------------------
+       product details storage in zustand 
+    ------------------------------------*/
+    const getproducts = async () => {
+
+      try {
+
+        const products = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}product`, {
+          withCredentials: true,
+        });
+        setProduct(products.data);
+      } catch (error) {
+        // router.push("login");
+      }
+    }
+    getproducts();
+
+  },[setProduct])
+  const addtocart=async(product:any)=>{
+
+    const id=product._id;
+    console.log("added to cart",id);
+  
+  }
   return (
     <>
       <div className="main">
@@ -45,8 +75,10 @@ function Page({}: Props) {
 
         <br />
 
-        Hi , <b>{user.name}</b> Welcome
-
+         <p>
+         Welcome , 
+          <b>{user?.name || "Athlete"}</b> 
+          </p> 
         <br /><br />
         {/* added  Products Section */}
 
@@ -78,6 +110,7 @@ function Page({}: Props) {
                 <div className="Buybutton">
                   
                 <button
+                  onClick={()=>addtocart(p)}
                   style={{
                     background: "#0070f3",
                     color: "white",

@@ -17,6 +17,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    Qauntity:{
+         type:Number,
+         required:true
+    },
     image: {
         type: String,
         required: false
@@ -24,11 +28,6 @@ const productSchema = new mongoose.Schema({
     images: {
         type: [String], // Array of image URLs
         required: false
-    },
-    fav: {
-        type: Boolean,
-        required: false,
-        default: false
     },
     cat:{
         type:String,

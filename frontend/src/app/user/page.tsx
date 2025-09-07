@@ -6,7 +6,7 @@ import useUserstate from "../Store/store";
 
 type Props = {};
 
-function Page({}: Props) {
+function Page({ }: Props) {
   const user = useUserstate((state) => state.user);
   const clearUser = useUserstate((state) => state.clearUser);
   const router = useRouter();

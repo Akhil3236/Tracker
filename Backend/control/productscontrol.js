@@ -39,7 +39,7 @@ export const edit=async(req,res)=>{
 -------------------------------------------------------------------*/
 export const add=async(req,res)=>{
 
-    const {name,cost,discount,desc,image,images,fav}=req.body;
+    const {name,cost,discount,desc,Qauntity,image,images,fav}=req.body;
 
     if(!name || !cost || !discount || !desc){
         return res.status(400).json({
@@ -47,7 +47,7 @@ export const add=async(req,res)=>{
         })
     }
     const product=new Products({
-        name,cost,discount,desc,image,images,fav
+        name,cost,discount,desc,Qauntity,image,images,fav
     })
 
     await product.save();
