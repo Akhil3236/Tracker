@@ -39,8 +39,6 @@ export const addcart=async(req,res)=>{
             cart.items.push({ productId, quantity });
           }
         }
-    
-
         await cart.save();
     
         res.status(200).json({ message: "Product added to cart", cart });
@@ -49,22 +47,18 @@ export const addcart=async(req,res)=>{
         res.status(500).json({ error: "Failed to add to cart" });
       }
 }
-
-
-
 /*-------------------------------------
 2)  TO get the products in the cart 
 ------------------------------------*/
-
-export const cart=async(req,res)=>{
-
-    res.status(200).json({
-        message:"all the cart products"
-    })
+export const cart=async(req,res)=>{   
+    try {
+        const userId = req.user.id;
+        const cart = await Cart.findOne({ userId }).populate("items.productId");
+        res.json(cart);
+      } catch (err) {
+        res.status(500).json({ error: "Failed to fetch cart" });
+      }
 }
-
-
-
 /*---------------------------------
 3) remove the product in the cart
 ---------------------------------*/

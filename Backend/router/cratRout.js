@@ -8,4 +8,4 @@ export const cartRouter=express.Router();
 
 cartRouter.post('/add',authMiddleware,addcart);
 cartRouter.post('/remove',authMiddleware,remove_prduct);
-cartRouter.post('/',authMiddleware,cart);
+cartRouter.get('/',authMiddleware,cart);
