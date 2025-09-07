@@ -12,10 +12,6 @@ export default function Header() {
   const router = useRouter();
   const user = useUserstate((state) => state.user);
 
-
-
-
-
     return (
       <header style={{ padding: "1rem", background: "#222", color: "#fff" }}>
         
@@ -27,12 +23,8 @@ export default function Header() {
 
           <div className="right">
 
-
-           
             <Link href="/dashboard">Home</Link>
-           
-            <Link href="/about">about us</Link>
-          
+            <Link href="/cart">Cart</Link>
             {
               user ? (
                 <>

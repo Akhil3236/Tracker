@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import { userRouter } from "../router/userRouter.js";
 import { productRouth } from "../router/productRout.js";
 import { emailRouter } from "../router/emailRouter.js";
+import { cartRouter } from "../router/cratRout.js";
 dotenv.config();
 
 const app=express();
@@ -36,5 +37,6 @@ process.exit(1);
 app.use("/auth",authRouter);
 app.use("/user",userRouter);
 app.use("/product",productRouth);
-app.use("/email",emailRouter)
+app.use("/email",emailRouter);
+app.use("/cart",cartRouter);
 
