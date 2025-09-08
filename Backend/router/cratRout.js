@@ -1,6 +1,7 @@
 import express from "express"
 import { addcart, cart, remove_prduct } from "../control/cartControl.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
+import { rediscart } from "../redis/server.js";
 
 
 export const cartRouter=express.Router();
@@ -8,4 +9,5 @@ export const cartRouter=express.Router();
 
 cartRouter.post('/add',authMiddleware,addcart);
 cartRouter.post('/remove',authMiddleware,remove_prduct);
-cartRouter.get('/',authMiddleware,cart);
+cartRouter.get('/:id',authMiddleware,cart);
+cartRouter.get("/redis/cart",authMiddleware,rediscart)
