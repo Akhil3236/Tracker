@@ -47,9 +47,37 @@ function Page({}: Props) {
     getproducts();
 
   },[setProduct])
-  const addtocart=async(product:any)=>{
+
+/*------------------------------------
+  adding products to the databases
+------------------------------------*/
+
+const addtocart=async(product:any)=>{
 
     const id=product._id;
+
+
+    //axios reguest for thr backend to add the products to the carts
+    try {
+      const additems=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}cart/add`,{
+        
+        productId:`${id}`,
+        quantity:1
+      },
+      {
+        withCredentials:true
+      })
+
+      if(additems){
+
+        alert("added !!");
+        
+      }
+  } catch (error) {
+    
+    console.log(error);
+    
+  }
     console.log("added to cart",id);
   
   }
