@@ -3,66 +3,73 @@
 
 "use client";
 
-import { log } from "console";
+import axios from "axios";
+import { useEffect } from "react";
+import useUserstate from "../Store/store";
+import useCart from "../Store/cartStore"
+import useProduct from "../Store/products";
 
-const cartItems = [
-  {
-    id: "1",
-    name: "Whey Protein (2kg)",
-    cost: 1500,
-    quantity: 2,
-    image: "https://via.placeholder.com/60",
-  },
-  {
-    id: "2",
-    name: "Creatine Monohydrate (300g)",
-    cost: 1200,
-    quantity: 1,
-    image: "https://via.placeholder.com/60",
-  },
-  {
-    id: "3",
-    name: "Pre-Workout Formula",
-    cost: 800,
-    quantity: 1,
-    image: "https://via.placeholder.com/60",
-  },
-];
+// items now come from zustand store
 export default function CartPage() {
-  const deleteitem=()=>{
+  type ProductRef = { _id?: string; id?: string; name: string; cost: number; image?: string };
+  type CartItem = { id?: string; _id?: string; productId?: ProductRef; name?: string; cost?: number; quantity: number; image?: string };
+  const setProducts = useCart((state) => state.setProducts);
+  const items = useCart((state) => state.items) as CartItem[];
+  const user = useUserstate((state) => state.user);
+
+  useEffect(() => {
+
+    const getproduct = async () => {
+
+      const id = (user as any)?.id || (user as any)?._id;
+      if (!id) return;
+      const getproduct = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}cart/${id}`, {
+        withCredentials: true
+      })
+
+      const payload = getproduct.data?.cart?.items || getproduct.data?.items || [];
+      setProducts(payload);
+
+    }
+    getproduct();
+  }, [user])
+
+  const deleteitem = () => {
     console.log("deleted items");
   }
 
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.cost * item.quantity,
-    0
-  );
+  const total = items.reduce((sum: number, item: CartItem) => {
+    const cost = item.productId?.cost ?? item.cost ?? 0;
+    return sum + cost * item.quantity;
+  }, 0);
 
   return (
     <div className="min-h-150 bg-gray-100 flex flex-col">
       <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-black">
-        {cartItems.map((item) => (
+        {items.map((item: CartItem, index: number) => (
           <div
-            key={item.id}
+            key={item.id || item._id || item.productId?._id || item.productId?.id || `${item.productId?.name || item.name}-${index}`}
             className="flex items-start space-x-3 bg-grey rounded-2xl shadow-md p-4 max-w-md"
           >
             <img
-              src={item.image}
-              alt={item.name}
+              src={item.productId?.image || item.image || ""}
+              alt={(item.productId?.name || item.name) as string}
               className="w-14 h-14 rounded-lg object-cover"
             />
             <div className="flex-1">
-              <p className="text-sm font-semibold">{item.name}</p>
+              <p className="text-sm font-semibold">{item.productId?.name || item.name}</p>
               <p className="text-gray-600 text-sm">
-                ₹{item.cost} × {item.quantity}
+                ₹{item.productId?.cost ?? item.cost} × {item.quantity}
               </p>
               <p className="font-bold text-green-600 mt-1">
-                ₹{item.cost * item.quantity}
+                ₹{(item.productId?.cost ?? item.cost ?? 0) * item.quantity}
               </p>
               <button onClick={deleteitem}>delete</button>
             </div>
           </div>
         ))}
+
+
       </div>
 
       {/* Footer like ChatGPT input box */}

@@ -49,7 +49,7 @@ function Page({}: Props) {
   },[setProduct])
 
 /*------------------------------------
-  adding products to the databases
+  adding cart  products to the databases
 ------------------------------------*/
 
 const addtocart=async(product:any)=>{
