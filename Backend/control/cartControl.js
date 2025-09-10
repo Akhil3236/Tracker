@@ -63,9 +63,36 @@ export const cart = async (req, res) => {
 3) remove the product in the cart
 ---------------------------------*/
 export const remove_prduct = async (req, res) => {
+  try {
+    const userId = req.user.id; // from auth middleware
+    const { itemId } = req.body;
 
-  res.status(200).json({
-    message: "product removed sucessfully"
-  })
+    if (!itemId) {
+      return res.status(400).json({ error: "Item ID is required" });
+    }
 
+    // Find the cart and remove the item
+    const cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ error: "Cart not found" });
+    }
+
+    // Remove item from cart items array
+    cart.items = cart.items.filter(item =>
+      item.productId.toString() !== itemId &&
+      item._id.toString() !== itemId
+    );
+
+    await cart.save();
+
+    res.status(200).json({
+      message: "Product removed successfully",
+      cart
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to remove product from cart" });
+  }
 }
