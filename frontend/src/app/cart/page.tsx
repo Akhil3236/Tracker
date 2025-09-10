@@ -34,8 +34,28 @@ export default function CartPage() {
     getproduct();
   }, [user])
 
-  const deleteitem = () => {
-    console.log("deleted items");
+  const deleteitem = async (itemId: string) => {
+    try {
+      console.log("deleted item:", itemId);
+
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}cart/remove`, { itemId }, {
+        withCredentials: true
+      });
+
+      console.log(response.data);
+
+      // Refresh cart data after successful deletion
+      const id = (user as any)?.id || (user as any)?._id;
+      if (id) {
+        const getproduct = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}cart/${id}`, {
+          withCredentials: true
+        });
+        const payload = getproduct.data?.cart?.items || getproduct.data?.items || [];
+        setProducts(payload);
+      }
+    } catch (error) {
+      console.error("Delete failed:", error);
+    }
   }
 
   const total = items.reduce((sum: number, item: CartItem) => {
@@ -64,7 +84,7 @@ export default function CartPage() {
               <p className="font-bold text-green-600 mt-1">
                 ₹{(item.productId?.cost ?? item.cost ?? 0) * item.quantity}
               </p>
-              <button onClick={deleteitem}>delete</button>
+              <button onClick={() => deleteitem(item.id || item._id || item.productId?._id || item.productId?.id || "")}>delete</button>
             </div>
           </div>
         ))}
