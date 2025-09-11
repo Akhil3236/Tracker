@@ -1,4 +1,5 @@
 import { Cart } from "../models/cart/cart.js"
+import { Order } from "../models/order/order.js";
 import { Products } from "../models/products/product.js"
 
 /*---------------------------------
@@ -96,3 +97,99 @@ export const remove_prduct = async (req, res) => {
     res.status(500).json({ error: "Failed to remove product from cart" });
   }
 }
+
+
+/*--------------------------------------------------------
+   A) checking weather the prodcts are Avaliable or Not 
+---------------------------------------------------------*/
+
+const validateOrder = async (cart) => {
+  if (!cart.items || cart.items.length === 0) {
+    return false;
+  }
+
+  for (const item of cart.items) {
+    // Check if product exists
+    const product = await Products.findById(item.productId);
+    if (!product) {
+      return false; // Invalid product
+    }
+
+    // Check if quantity is valid
+    if (item.quantity <= 0 || item.quantity > product.stock) {
+      return false; // Invalid quantity
+    }
+
+    // Check if price matches
+    if (item.price !== product.price) {
+      return false; // Price mismatch
+    }
+  }
+
+  // Optionally check total price consistency
+  const calculatedTotal = cart.items.reduce((sum, item) => sum + item.quantity * item.price, 0);
+  if (calculatedTotal !== cart.totalPrice) {
+    return false; // Total price mismatch
+  }
+
+  return true;
+}
+
+/*--------------------------------------
+3) placing the order in  the cart items
+----------------------------------------*/
+
+
+
+export const order = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ message: 'items not found' });
+    }
+
+    // Populate cart items with product details
+    const populatedItems = [];
+    let totalPrice = 0;
+
+    for (const item of cart.items) {
+      const product = await Products.findById(item.productId);
+      if (!product) {
+        return res.status(400).json({ message: 'Product not found' });
+      }
+
+      const itemTotal = product.cost * item.quantity;
+      totalPrice += itemTotal;
+
+      populatedItems.push({
+        productId: item.productId,
+        name: product.name,
+        quantity: item.quantity,
+        price: product.cost
+      });
+    }
+
+    const newOrder = await Order.create({
+      userId,
+      items: populatedItems,
+      totalPrice: totalPrice,
+      status: 'Pending',
+      createdAt: new Date()
+    });
+
+
+    await Cart.findOneAndDelete({ userId });
+
+    res.status(200).json({
+      message: "Order placed successfully",
+      orderId: newOrder._id
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Server issue! Try again"
+    });
+  }
+} 
