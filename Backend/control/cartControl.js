@@ -96,3 +96,39 @@ export const remove_prduct = async (req, res) => {
     res.status(500).json({ error: "Failed to remove product from cart" });
   }
 }
+
+
+/*--------------------------------------
+3) placing the order in  the cart items
+----------------------------------------*/
+
+export const order = async (req, res) => {
+
+
+  try {
+    const userId = req.user.id
+    console.log(userId);
+    const cart = await Cart.findOne({ userId });
+
+    const items = cart.items;
+
+    const unavailableItems = items.filter(item => item.quantity < 1);
+
+    if (unavailableItems.length > 0) {
+      return res.status(404).json({
+        message: "Some items are out of stock",
+        unavailableItems: unavailableItems.length
+      });
+    }
+    
+    res.status(200).json({
+      message: "All items available for order",
+      totalItems: items.length
+    });
+  } catch (error) {
+    res.status(505).json({
+      message: "server issuse !!! try again"
+    })
+  }
+
+} 
