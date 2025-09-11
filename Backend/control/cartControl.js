@@ -1,7 +1,9 @@
 import { Cart } from "../models/cart/cart.js"
 import { Order } from "../models/order/order.js";
 import { Products } from "../models/products/product.js"
+import dotenv from "dotenv"
 
+dotenv.config();
 /*---------------------------------
 1) add the product in the cart
 ---------------------------------*/
@@ -147,7 +149,7 @@ export const order = async (req, res) => {
     const cart = await Cart.findOne({ userId });
 
     if (!cart) {
-      return res.status(404).json({ message: 'items not found' });
+      return res.status(404).json({ message: 'cart is empty' });
     }
 
     // Populate cart items with product details
@@ -182,10 +184,25 @@ export const order = async (req, res) => {
 
     await Cart.findOneAndDelete({ userId });
 
-    res.status(200).json({
-      message: "Order placed successfully",
+    const params = {
+      QueueUrl: process.env.SQS_QUEUE_URL,
+      MessageBody: JSON.stringify({
+        orderId: newOrder._id,
+        userId: userId,
+        items: populatedItems,
+        totalPrice: totalPrice
+      })
+    };
+
+    console.log(params);
+
+    //  await sqs.sendMessage(params).promise();
+
+    return res.status(200).json({
+      message: 'Order placed and queued for processing',
       orderId: newOrder._id
     });
+   
   } catch (error) {
     console.error(error);
     res.status(500).json({
