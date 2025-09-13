@@ -188,9 +188,6 @@ export const order = async (req, res) => {
       createdAt: new Date()
     });
 
-
-
-
     const params = {
       QueueUrl: process.env.SQS_QUEUE_URL,
       MessageBody: JSON.stringify({

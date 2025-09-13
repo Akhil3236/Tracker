@@ -6,15 +6,15 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
-// import { auth, googleprovider } from "../firebase.js";
-// import { signInWithPopup } from "firebase/auth";
+import { auth, googleprovider } from "../firebase.js";
+import { signInWithPopup } from "firebase/auth";
 
 
 
 // Force Google to show account selection
-// googleprovider.setCustomParameters({
-//   prompt: "select_account"
-// });
+googleprovider.setCustomParameters({
+  prompt: "select_account"
+});
 
 
 
@@ -96,33 +96,33 @@ function page() {
        login with google 
   ----------------------------*/
 
-  // const google=async()=>{
+  const google=async()=>{
 
-  //   try {
+    try {
         
-  //     const result=await signInWithPopup(auth,googleprovider);
-  //     const userdetails=result.user;
+      const result=await signInWithPopup(auth,googleprovider);
+      const userdetails=result.user;
 
 
-  //     const token = await userdetails.getIdToken();  
-  //     const google_res=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}auth/google`,
-  //       {token,},
-  //       { withCredentials: true }
-  //     );
+      const token = await userdetails.getIdToken();  
+      const google_res=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}auth/google`,
+        {token,},
+        { withCredentials: true }
+      );
 
-  //     if(google_res.status===200){
-  //       router.push("/");
-  //       login();
+      if(google_res.status===200){
+        router.push("/");
+        login();
         
-  //     }
-  //     // else{
-  //     //   toast(google_res.data);
-  //     // }
+      }
+      // else{
+      //   toast(google_res.data);
+      // }
     
-  //   } catch (error: any) {
-  //     console.log("error :: ->  ",error); 
-  //   }
-  // }
+    } catch (error: any) {
+      console.log("error :: ->  ",error); 
+    }
+  }
 
   
 
@@ -188,7 +188,7 @@ function page() {
          <p>
          Create account <Link href="/signup">here</Link>
         </p>          
-        {/* <button onClick={google}>sign in with google</button> */}
+        <button onClick={google}>sign in with google</button>
     </>
   )
 }
