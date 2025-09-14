@@ -3,12 +3,18 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import useUserstate from "../Store/store";
+import useCart from "../Store/cartStore";
+import useProduct from "../Store/products";
 
 type Props = {};
 
 function Page({ }: Props) {
   const user = useUserstate((state) => state.user);
   const clearUser = useUserstate((state) => state.clearUser);
+  const clearProducts=useCart((state)=>state.clearProducts);
+  const clearProduct=useProduct((state)=>state.clearProduct);
+
+
   const router = useRouter();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -28,6 +34,8 @@ function Page({ }: Props) {
     if (res.status === 200) {
       window.dispatchEvent(new Event("auth-changed"));
       clearUser();
+      clearProducts();
+      clearProduct();
       router.push("/login");
     }
   };
