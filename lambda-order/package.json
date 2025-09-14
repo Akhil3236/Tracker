@@ -12,6 +12,7 @@
   "type": "commonjs",
   "dependencies": {
     "aws-sdk": "^2.1692.0",
+    "mongodb": "^6.19.0",
     "mongoose": "^8.18.1"
   }
 }
