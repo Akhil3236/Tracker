@@ -14,9 +14,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   // Load Bootstrap JS for dropdowns/collapse
-  useEffect(() => {
-  import("bootstrap/dist/js/bootstrap.bundle.min.js");
-}, []);
+//   useEffect(() => {
+//   import("bootstrap/dist/js/bootstrap.bundle.min.js");
+// }, []);
 
   return (
     <html lang="en">

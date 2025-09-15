@@ -1,7 +1,7 @@
-/* Navbar Custom Styling */
 .navbar {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-background-color: #ffe600 !important;
+  background-color: #525050 !important;
+  z-index: 1000;
 }
 
 .navbar .nav-link {
@@ -12,10 +12,9 @@ background-color: #ffe600 !important;
 }
 
 .navbar .nav-link:hover {
-  color: #0d6efd !important; /* Bootstrap primary color */
+  color: #0d6efd !important;
 }
 
-/* Custom Icons */
 .nav-icon {
   width: 26px;
   height: 26px;
@@ -28,7 +27,6 @@ background-color: #ffe600 !important;
   transform: scale(1.1);
 }
 
-/* Cart Badge */
 .cart-badge {
   position: absolute;
   top: -4px;
