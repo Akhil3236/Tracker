@@ -29,7 +29,7 @@ const Header: React.FC = () => {
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex space-x-8 items-center">
-            <Link href="/" className="text-gray-600 hover:text-blue-600 transition px-3 py-2 rounded">
+            <Link href="/dashboard" className="text-gray-600 hover:text-blue-600 transition px-3 py-2 rounded">
               Home
             </Link>
             <Link href="/" className="text-gray-600 hover:text-blue-600 transition px-3 py-2 rounded">

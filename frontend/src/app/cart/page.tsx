@@ -7,7 +7,8 @@ import axios from "axios";
 import { useEffect } from "react";
 import useUserstate from "../Store/store";
 import useCart from "../Store/cartStore"
-import useProduct from "../Store/products";
+import {useRouter} from "next/navigation";
+import { push } from "firebase/database";
 
 // items now come from zustand store
 export default function CartPage() {
@@ -16,6 +17,7 @@ export default function CartPage() {
   const setProducts = useCart((state) => state.setProducts);
   const items = useCart((state) => state.items) as CartItem[];
   const user = useUserstate((state) => state.user);
+  const router=useRouter();
 
   useEffect(() => {
 
@@ -56,6 +58,25 @@ export default function CartPage() {
     } catch (error) {
       console.error("Delete failed:", error);
     }
+  }
+  
+  const checkout=async()=>{
+
+  const orderit=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}cart/place-order`,{},{
+    withCredentials:true
+  });
+
+  if(orderit.status===200){
+    router.push("/orders");
+  }
+  else{
+
+    console.log(orderit);
+    router.push("/orders");
+    
+  }
+  
+
   }
 
   const total = items.reduce((sum: number, item: CartItem) => {
@@ -98,7 +119,7 @@ export default function CartPage() {
           <h2 className="text-lg font-bold">Total</h2>
           <p className="text-lg font-bold text-green-600">₹{total}</p>
         </div>
-        <button className="mt-3 w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition">
+        <button onClick={checkout} className="mt-3 w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition">
           Proceed to Checkout
         </button>
       </div>
