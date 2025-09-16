@@ -8,6 +8,7 @@ import { userRouter } from "../router/userRouter.js";
 import { productRouth } from "../router/productRout.js";
 import { emailRouter } from "../router/emailRouter.js";
 import { cartRouter } from "../router/cratRout.js";
+import { orderRouth } from "../router/orderRout.js";
 dotenv.config();
 
 const app=express();
@@ -39,4 +40,4 @@ app.use("/user",userRouter);
 app.use("/product",productRouth);
 app.use("/email",emailRouter);
 app.use("/cart",cartRouter);
-
+app.use("/order",orderRouth)
