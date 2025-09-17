@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import useUserstate from "../Store/store";
 import useCart from "../Store/cartStore";
 import useProduct from "../Store/products";
+import useOrders from "../Store/orderStore";
 
 type Props = {};
 
@@ -13,6 +14,7 @@ function Page({ }: Props) {
   const clearUser = useUserstate((state) => state.clearUser);
   const clearProducts=useCart((state)=>state.clearProducts);
   const clearProduct=useProduct((state)=>state.clearProduct);
+  const clearorders=useOrders((state)=>state.clearorders);
 
 
   const router = useRouter();
@@ -36,6 +38,8 @@ function Page({ }: Props) {
       clearUser();
       clearProducts();
       clearProduct();
+      clearorders();
+
       router.push("/login");
     }
   };
