@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import useUserstate from "../Store/store";
 import useCart from "../Store/cartStore"
 import {useRouter} from "next/navigation";
-import { push } from "firebase/database";
+
 
 // items now come from zustand store
 export default function CartPage() {

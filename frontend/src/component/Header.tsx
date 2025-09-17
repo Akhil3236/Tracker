@@ -32,8 +32,8 @@ const Header: React.FC = () => {
             <Link href="/dashboard" className="text-gray-600 hover:text-blue-600 transition px-3 py-2 rounded">
               Home
             </Link>
-            <Link href="/" className="text-gray-600 hover:text-blue-600 transition px-3 py-2 rounded">
-              Shop
+            <Link href="/orders" className="text-gray-600 hover:text-blue-600 transition px-3 py-2 rounded">
+              orders
             </Link>
             <div className="relative group">
               <button className="text-gray-600 hover:text-blue-600 transition px-3 py-2 rounded flex items-center gap-1">
