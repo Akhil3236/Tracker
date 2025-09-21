@@ -7,7 +7,9 @@ import useOrders from "../Store/orderStore";
 function Page() {
   const setorders = useOrders((state) => state.setorders); 
   const items = useOrders((state) => state.items);
-
+ 
+   
+  // add new page
   useEffect(() => {
     const getOrders = async () => {
       try {
