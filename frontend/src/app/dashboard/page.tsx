@@ -5,18 +5,22 @@ import { useRouter } from "next/navigation";
 import useUserstate from "../Store/store";
 import useProduct from "../Store/products";
 import axios from "axios";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import Image from "next/image";
+
 
 type Props = {};
 
 function Page({}: Props) {
   const router = useRouter();
   const [search, setsearch] = useState("");
-
   const setProduct = useProduct((state) => state.setProduct);
   const user = useUserstate((state) => state.user);
   const products = useProduct((state) => state.product);
-
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setsearch(e.target.value);
@@ -25,17 +29,11 @@ function Page({}: Props) {
   const searchitem = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     alert(search);
-  };  
- 
-  useEffect(()=>{
-  
-    /*------------------------------------
-       product details storage in zustand 
-    ------------------------------------*/
+  };
+
+  useEffect(() => {
     const getproducts = async () => {
-
       try {
-
         const products = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}product`, {
           withCredentials: true,
         });
@@ -43,49 +41,77 @@ function Page({}: Props) {
       } catch (error) {
         // router.push("login");
       }
-    }
+    };
     getproducts();
+  }, [setProduct]);
 
-  },[setProduct])
-
-/*------------------------------------
-  adding cart  products to the databases
-------------------------------------*/
-
-const addtocart=async(product:any)=>{
-
-    const id=product._id;
-
-
-    //axios reguest for thr backend to add the products to the carts
+  const addtocart = async (product: any) => {
+    const id = product._id;
     try {
-      const additems=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}cart/add`,{
-        
-        productId:`${id}`,
-        quantity:1
-      },
-      {
-        withCredentials:true
-      })
-
-      if(additems){
-
+      const additems = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}cart/add`,
+        {
+          productId: `${id}`,
+          quantity: 1,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      if (additems) {
         alert("added !!");
-        
       }
-  } catch (error) {
-    
-    console.log(error);
-    
-  }
-    console.log("added to cart",id);
-  
-  }
+    } catch (error) {
+      console.log(error);
+    }
+    console.log("added to cart", id);
+  };
+
   return (
     <>
+      {/* Carousel Section */}
+      <div style={{ width: "100%", marginTop: "0" }}>
+        <Swiper
+          modules={[Navigation, Pagination]}
+          spaceBetween={0}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+          loop={true}
+          style={{ width: "100%", height: "90vh" }}
+        >
+<SwiperSlide>
+  <Image
+    src="/assets/gym_ban.png"
+    alt="Slide 1"
+    width={1920}
+    height={600}
+    style={{ width: "100%", height: "92%", objectFit: "cover" }}
+  />
+</SwiperSlide>
+<SwiperSlide>
+  <Image
+    src="/assets/banner2.png"
+    alt="Slide 2"
+    width={1920}
+    height={600}
+    style={{ width: "100%", height: "92%", objectFit: "cover" }}
+  />
+</SwiperSlide>
+<SwiperSlide>
+  <Image
+    src="/assets/banner3.png"
+    alt="Slide 3"
+    width={1920}
+    height={600}
+    style={{ width: "100%", height: "92%", objectFit: "cover" }}
+  />
+</SwiperSlide>
+        </Swiper>
+      </div>
+
       <div className="main">
         <br />
-
         {/* 🔎 Search Section */}
         <div className="serach">
           <form onSubmit={searchitem}>
@@ -96,21 +122,17 @@ const addtocart=async(product:any)=>{
               name="search"
               value={search}
               onChange={handleChange}
-              />
+            />
             <button type="submit">search</button>
           </form>
         </div>
-
         <br />
-
-         <p>
-         Welcome , 
-          <b>{user?.name || "Athlete"}</b> 
-          </p> 
-        <br /><br />
-        {/* added  Products Section */}
-
-        {/* make some changes */}
+        <p>
+          Welcome , <b>{user?.name || "Athlete"}</b>
+        </p>
+        <br />
+        <br />
+        {/* Products Section */}
         <div className="products-grid">
           {products && products.length > 0 ? (
             products.map((p: any) => (
@@ -134,35 +156,33 @@ const addtocart=async(product:any)=>{
                 <p>
                   <b>₹{p.cost}</b> <span style={{ color: "green" }}>-{p.discount}%</span>
                 </p>
-
                 <div className="Buybutton">
-                  
-                <button
-                  onClick={()=>addtocart(p)}
-                  style={{
-                    background: "#0070f3",
-                    color: "white",
-                    padding: "8px 12px",
-                    border: "none",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                  }}
+                  <button
+                    onClick={() => addtocart(p)}
+                    style={{
+                      background: "#0070f3",
+                      color: "white",
+                      padding: "8px 12px",
+                      border: "none",
+                      borderRadius: "6px",
+                      cursor: "pointer",
+                    }}
                   >
-                  Add to Cart
-                </button>
-                <button
-                  style={{
-                    background: "red",
-                    color: "white",
-                    padding: "8px 12px",
-                    border: "none",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                  }}
+                    Add to Cart
+                  </button>
+                  <button
+                    style={{
+                      background: "red",
+                      color: "white",
+                      padding: "8px 12px",
+                      border: "none",
+                      borderRadius: "6px",
+                      cursor: "pointer",
+                    }}
                   >
-                  buy
-                </button>
-                  </div>
+                    buy
+                  </button>
+                </div>
               </div>
             ))
           ) : (

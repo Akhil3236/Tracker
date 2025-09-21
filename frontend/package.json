@@ -17,7 +17,9 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hot-toast": "^2.6.0",
+    "react-swiper": "^0.1.5",
     "react-toastify": "^11.0.5",
+    "swiper": "^12.0.1",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
