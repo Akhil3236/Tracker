@@ -4,7 +4,7 @@ import { authMiddleware } from "../middleware/authMiddleware.js";
 
 export const productRouth=express.Router();
 
-productRouth.get("/",authMiddleware,productList);
-productRouth.post("/add",authMiddleware,add);
-productRouth.put("/edit/:id",authMiddleware,edit);
-productRouth.post("/delete/:id",authMiddleware,deleteproduct);
+productRouth.get("/",productList);
+productRouth.post("/add",add);
+productRouth.put("/edit/:id",edit);
+productRouth.post("/delete/:id",deleteproduct);
