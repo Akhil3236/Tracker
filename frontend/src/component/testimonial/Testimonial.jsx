@@ -41,7 +41,8 @@ const TestimonialSection = () => {
         paddingRight: "20px",
       }}
     >
-      <div style={{ width: "100%", maxWidth: "1400px", margin: "0 auto" }}>
+      {/* Full-width container */}
+      <div style={{ width: "100%", margin: "0 auto" }}>
         {/* Heading */}
         <div className="text-center mb-5">
           <h2
@@ -72,7 +73,7 @@ const TestimonialSection = () => {
                 }}
               >
                 <div className="card-body text-center p-4">
-                  {/* Avatar Wrapper */}
+                  {/* Avatar */}
                   <div
                     style={{
                       width: "90px",
@@ -88,10 +89,7 @@ const TestimonialSection = () => {
                       src={testimonial.image}
                       alt={testimonial.name}
                       fill
-                      style={{
-                        objectFit: "cover",
-                        objectPosition: "center",
-                      }}
+                      style={{ objectFit: "cover", objectPosition: "center" }}
                     />
                   </div>
 
