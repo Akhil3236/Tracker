@@ -154,6 +154,55 @@ const Combos = () => {
             </div>
           ))}
         </div>
+
+        {/* Promotional Banner */}
+        <div style={{
+          backgroundColor: '#dc3545',
+          borderRadius: '15px',
+          padding: '25px 20px',
+          textAlign: 'center',
+          marginTop: '40px',
+          background: 'linear-gradient(135deg, #dc3545, #c82333)',
+          boxShadow: '0 10px 30px rgba(220, 53, 69, 0.3)'
+        }}>
+          <h2 style={{
+            color: '#ffffff',
+            fontSize: '35px',
+            fontWeight: '800',
+            margin: '0 0 20px 0',
+            lineHeight: '1.2',
+            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)'
+          }}>
+            Extra 10% OFF on orders above ₹1500
+          </h2>
+          
+          <button style={{
+            backgroundColor: '#ffc107',
+            color: '#000000',
+            border: 'none',
+            borderRadius: '12px',
+            padding: '12px 30px',
+            fontSize: '15px',
+            fontWeight: '700',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            boxShadow: '0 5px 15px rgba(255, 193, 7, 0.4)',
+            textTransform: 'uppercase',
+            letterSpacing: '1px'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#ffcd39';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 8px 25px rgba(255, 193, 7, 0.6)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#ffc107';
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 5px 15px rgba(255, 193, 7, 0.4)';
+          }}>
+            Shop Combos
+          </button>
+        </div>
       </div>
     </div>
   );
