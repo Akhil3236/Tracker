@@ -10,8 +10,7 @@ export default function Home() {
       <p>admin can see the products here</p>
       {/* products */}
       <p>admin can add the products here </p>
-      {/* lesta dd here the order page in the adimin page */}
-      <>here we should has to add the user details for this page and all</>
+      {/* added the admin user page for that page */}
     </>
   );
 }
